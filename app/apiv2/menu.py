@@ -51,16 +51,20 @@ class LowerLevelMenu:
         menu_text = "END Please wait while we place your call.\n"
 
         # make a call
+<
         caller = current_app.config["AT_NUMBER"]
         to = self.user.phone_number
+
 
         # create a new instance of our awesome gateway
         gateway = AfricasTalkingGateway(
             current_app.config["AT_USERNAME"], current_app.config["AT_APIKEY"])
         try:
+
             gateway.call(caller, to)
         except AfricasTalkingGateway as e:
             print "Encountered an error when calling: {}".format(str(e))
+
 
         # print the response on to the page so that our gateway can read it
         return respond(menu_text)
@@ -176,7 +180,9 @@ class HighLevelMenu:
 
         # Declare params
         gateway = make_gateway()
+
         product_name = current_app.config["PRODUCT_NAME"]
+
         currency_code = "KES"
         amount = int(self.user_response)
         metadata = {"sacco": "Nerds", "productId": "321"}
@@ -218,7 +224,9 @@ class HighLevelMenu:
 
             # Declare Params
             gateway = make_gateway()
+
             product_name = current_app.config["PRODUCT_NAME"]
+
             recipients = [
                 {"phoneNumber": self.phone_number,
                  "currencyCode": "KES",
@@ -270,12 +278,14 @@ class HighLevelMenu:
                 db.session.add(creditorAccount)
 
             # SMS New Balance
+
             code = current_app.config["SMS_CODE"]
             recepients = self.phone_number
             message = "We have sent {}/- to {} \nIf \
             this is a wrong number the transaction will fail\n" \
                       "Your new balance is {} \n\
                       Thank you.\n".format(amount, debptor_phone_number,
+=
                                          creditorAccount.account)
             gateway = make_gateway()
             try:
@@ -321,7 +331,9 @@ class HighLevelMenu:
 
         # Declare Params
         gateway = make_gateway()
+
         productName = current_app.config["PRODUCT_NAME"]
+
         currencyCode = "KES"
         metadata = {"Sacco Repayment": "Nerds", "productId": "321"}
 

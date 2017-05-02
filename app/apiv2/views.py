@@ -1,3 +1,4 @@
+
 from flask import request, url_for, send_from_directory
 from ..models import User, SessionLevel
 from .utils import respond, add_session
@@ -5,12 +6,15 @@ from . import api_v11
 from .menu import LowerLevelMenu, HighLevelMenu, RegistrationMenu
 
 
+
 @api_v11.route('/', methods=['POST', 'GET'])
 def index():
     return respond("END connection ok")
 
 
+
 @api_v11.route('/ussd/callback', methods=['POST'])
+
 def ussd_callback():
     """
     Handles post call back from AT
@@ -20,10 +24,13 @@ def ussd_callback():
 
     # GET values from the AT's POST request
     session_id = request.values.get("sessionId", None)
+
+
     phone_number = request.values.get("phoneNumber", None)
     text = request.values.get("text", "default")
     text_array = text.split("*")
     user_response = text_array[len(text_array) - 1]
+
 
     # 4. Check the level of the user from the DB and retain default level if none is found for this session
     session = SessionLevel.query.filter_by(session_id=session_id).first()
@@ -32,12 +39,15 @@ def ussd_callback():
   	# 6. Check if the user is available (yes)->Serve the menu; (no)->Register the user
     if user:
 		# 7. Serve the Services Menu
+
         if session:
             level = session.level
             # if level is less than 2 serve lower level menus
             if level < 2:
+
                 menu = LowerLevelMenu(
                     session_id=session_id, phone_number=phone_number)
+
                 # initialise menu dict
                 menus = {
                     "0": menu.home,
@@ -50,10 +60,12 @@ def ussd_callback():
                     "default": menu.default_menu
                 }
                 # serve menu
+
                 if user_response in menus.keys():
                     return menus.get(user_response)()
                 else:
                     return menus.get("default")()
+
 
             # if level is between 9 and 12 serve high level response
             elif level <= 12:
@@ -61,19 +73,23 @@ def ussd_callback():
                 # initialise menu dict
                 menus = {
                     9: {
+
                         # user_response : c2b_checkout(
                         # phone_number= phone_number, amount = int(user_response)
                         # )
+
                         "1": menu.c2b_checkout,
                         "2": menu.c2b_checkout,
                         "3": menu.c2b_checkout,
                         "default": menu.default_mpesa_checkout
                     },
                     10: {
+
                         # user_response : b2c_checkout(
                         # phone_number=phone_number, amount=int(user_response)
                         # )
-zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz                        "1": menu.b2c_checkout,
+
+                        "1": menu.b2c_checkout,
                         "2": menu.b2c_checkout,
                         "3": menu.b2c_checkout,
                         "default": menu.b2c_default
@@ -95,6 +111,7 @@ zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz                        "1": menu.b2c_check
                         "default": menu.default_loan_checkout
                     }
                 }
+
                 if user_response in menus[level].keys():
                     return menus[level].get(user_response)()
                 else:
@@ -113,6 +130,7 @@ zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz                        "1": menu.b2c_check
                     # params = (session_id, phone_number=phone_number,
                     # user_response=user_response)
                     "default": menu.register_default,  # params = (session_id)
+
                 }
 
                 return menus.get(level or "default")()
@@ -122,17 +140,22 @@ zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz                        "1": menu.b2c_check
             # add a new session level
             add_session(session_id=session_id, phone_number=phone_number)
             # create a menu instance
+
             menu = LowerLevelMenu(session_id=session_id,
                                   phone_number=phone_number)
+
             # serve home menu
             return menu.home()
 
     else:
         # create a menu instance
+
         menu = RegistrationMenu(
             session_id=session_id, phone_number=phone_number, user_response=user_response)
+
         # register user
         return menu.get_number()
+
 
 
 @api_v11.route('/voice/callback', methods=['POST'])
@@ -256,3 +279,4 @@ def voice_menu():
 @api_v11.route('/media/<path:path>')
 def media(path):
     return send_from_directory('media', path)
+
