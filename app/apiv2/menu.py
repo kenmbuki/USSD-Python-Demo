@@ -33,9 +33,7 @@ class LowerLevelMenu:
         db.session.add(self.session)
         db.session.commit()
         # serve the menu
-        menu_text = "CON Welcome to Nerd \
-        Microfinance, {} Choose a service.\n".format(
-            self.user.name)
+        menu_text = "CON Choose a service\n"
         menu_text += " 1. Please call me.\n"
         menu_text += " 2. Deposit Money\n"
         menu_text += " 3. Withdraw Money\n"
