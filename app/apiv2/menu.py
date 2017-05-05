@@ -106,13 +106,15 @@ class LowerLevelMenu:
         menu_text = "END Please wait while we load your account.\n"
 
         # Search DB and the Send Airtime
-        recipientStringFormat = [{"phoneNumber": self.user.phone_number, "amount": "KES 1"}]
+        recipientStringFormat = [{"phoneNumber": self.user.phone_number, "amount": "KES 5"}]
 
         # Create an instance of our gateway
         gateway = AfricasTalkingGateway(
             current_app.config["AT_USERNAME"], current_app.config["AT_APIKEY"])
         try:
-            gateway.sendAirtime(recipientStringFormat)
+            resp = gateway.sendAirtime(recipientStringFormat)
+            for r in resp:
+                menu_text += r
         except AfricasTalkingGatewayException as e:
             menu_text += str(e)
 
