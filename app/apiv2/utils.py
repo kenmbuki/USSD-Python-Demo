@@ -21,7 +21,7 @@ def respond(menu_text):
 def make_gateway():
     return AfricasTalkingGateway(
         current_app.config["AT_USERNAME"],
-        current_app.config["AT_APIKEY"], "sandbox")
+        current_app.config["AT_APIKEY"])
 
 
 def add_session(session_id, phone_number):

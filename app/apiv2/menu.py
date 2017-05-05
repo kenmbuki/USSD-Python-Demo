@@ -197,7 +197,7 @@ class HighLevelMenu:
                              metadata)
 
         except AfricasTalkingGatewayException as e:
-            menu_text += "Received error response: {}".format(str(e))
+            print "Received error response: {}".format(str(e))
 
         # Print the response onto the page so that our gateway can read it
         return respond(menu_text)
@@ -240,7 +240,7 @@ class HighLevelMenu:
             try:
                 gateway.mobilePaymentB2CRequest(product_name, recipients)
             except AfricasTalkingGatewayException as e:
-                menu_text += "Received error response {}".format(str(e))
+                print "Received error response {}".format(str(e))
         else:
             # Alert user of insufficient funds
             menu_text = "END Sorry, you don't have sufficient\n"
