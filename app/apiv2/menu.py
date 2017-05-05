@@ -51,7 +51,6 @@ class LowerLevelMenu:
         menu_text = "END Please wait while we place your call.\n"
 
         # make a call
-<
         caller = current_app.config["AT_NUMBER"]
         to = self.user.phone_number
 
@@ -284,9 +283,7 @@ class HighLevelMenu:
             message = "We have sent {}/- to {} \nIf \
             this is a wrong number the transaction will fail\n" \
                       "Your new balance is {} \n\
-                      Thank you.\n".format(amount, debptor_phone_number,
-=
-                                         creditorAccount.account)
+                      Thank you.\n".format(amount, debptor_phone_number, creditorAccount.account)
             gateway = make_gateway()
             try:
                 gateway.sendMessage(recepients, message, code)
